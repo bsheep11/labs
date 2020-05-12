@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Product;
 
 class ProductsController extends Controller
 {
      public function index()
    {
-       $products = Product::all();
-       return view('products.index', compact('products'));
+	   if (Cache::has('products') {
+			$products = Cache::get('products');
+			return view ('products.index', compact('products'));
+	   } else {
+		   $products = Product::all();
+		   Cache::set('products', $products);
+	   }
+	   return view('products.index', compact('products'));
    }
 
 
